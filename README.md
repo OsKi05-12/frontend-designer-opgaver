@@ -86,3 +86,4 @@ Din løsning skal vise, at du kan:
 Find link til din løsning på Netlify og aflever det på Fronter.
 
 Link-struktur: **no-classes--**[Dit unikke netlify link].netlify.app/
+ 
