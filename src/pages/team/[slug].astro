@@ -1,0 +1,195 @@
+---
+// @ts-nocheck
+
+import Layout from "@layouts/Layout.astro";
+import { Image } from "astro:assets";
+import { getTeamMembers } from "@lib/api";
+import DynamicIcon from "@helpers/DynamicIcon.astro";
+
+export async function getStaticPaths() {
+  const team = await getTeamMembers();
+  return team
+    .filter((employee) => employee.slug === "sarah-jasmine")
+    .map((employee) => ({
+      params: { slug: employee.slug },
+      props: { employee },
+    }));
+}
+
+const { employee } = Astro.props;
+---
+
+<Layout title={employee.name}>
+  <main id="main-content" tabindex="-1" class="employee-page">
+    <div class="page-inner">
+      <a class="back-link button" href="/team">
+        <DynamicIcon name="arrow-left" width={20} height={18} aria-hidden="true" />
+        Back to our team
+      </a>
+
+      <article class="employee-profile">
+        <div class="portrait">
+          <Image
+            src={employee.image.src}
+            width={employee.image.width}
+            height={employee.image.height}
+            alt={employee.name}
+          />
+          <div class="social-links">
+            {employee.social_links.map((link) => (
+              <span
+                role="img"
+                aria-label={`${employee.name} on ${link.platform}`}
+              >
+                <DynamicIcon name={link.icon} width={20} height={20} aria-hidden="true" />
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div class="employee-content">
+          <h1>{employee.name}</h1>
+          <p class="role">{employee.title}</p>
+
+          <div class="biography">
+            <p>{employee.description_long}</p>
+          </div>
+
+          <section class="past-experience">
+            <h2>Past experience</h2>
+            <p>{employee.past_experience}</p>
+          </section>
+        </div>
+      </article>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @layer components {
+    .employee-page {
+      padding-block: var(--space-section);
+    }
+
+    .page-inner {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      padding-inline: var(--page-gutter);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: var(--space-medium);
+    }
+
+    .employee-profile {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      align-items: start;
+      gap: 3rem;
+    }
+
+    .portrait {
+      position: relative;
+      min-width: 0;
+      padding-top: 1.25rem;
+      padding-left: 1.25rem;
+    }
+
+    .portrait::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 45%;
+      height: 45%;
+      background: var(--color-green-400);
+      border-radius: var(--radius-large);
+    }
+
+    .portrait img {
+      position: relative;
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-large);
+    }
+
+    .employee-content {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .eyebrow {
+      font-size: var(--font-size-label);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    h1 {
+      margin-block: 0 var(--space-small);
+      font-size: var(--font-size-heading-medium);
+    }
+
+    .role {
+      font-weight: bold;
+      color: var(--color-text-muted);
+    }
+
+    .social-links {
+      position: relative;
+      justify-content: center;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: var(--space-medium);
+    }
+
+    .social-links span {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      background: var(--color-surface-secondary);
+      border-radius: 50%;
+    }
+
+    .social-links :global(svg) {
+      display: block;
+    }
+
+    h2 {
+      margin-block: 0 var(--space-small);
+      font-size: var(--font-size-heading-small);
+    }
+
+    .biography p,
+    .past-experience p {
+      color: var(--color-text-muted);
+      white-space: pre-line;
+    }
+
+    .past-experience {
+      margin-top: var(--space-medium);
+      padding-top: var(--space-medium);
+      border-top: 1px solid var(--color-surface-tertiary);
+    }
+
+    @media (max-width: 750px) {
+      .employee-page {
+        padding-block: 3rem;
+      }
+
+      .employee-profile {
+        grid-template-columns: 1fr;
+        gap: var(--space-medium);
+      }
+
+      .portrait {
+        max-width: 450px;
+      }
+    }
+  }
+</style>

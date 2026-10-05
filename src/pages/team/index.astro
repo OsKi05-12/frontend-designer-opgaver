@@ -1,0 +1,193 @@
+---
+// @ts-nocheck
+
+import Layout from "@layouts/Layout.astro";
+import PageHeader from "@components/PageHeader.astro";
+import { Image } from "astro:assets";
+import DynamicIcon from "@helpers/DynamicIcon.astro";
+
+import { getTeamMembers } from "@lib/api";
+const team = await getTeamMembers();
+---
+
+<Layout title="Team">
+  <main id="main-content" tabindex="-1" class="page-grid">
+    <PageHeader
+      eyebrow="Team"
+      title="The Consultors"
+      description="Our success stems from the synergy between dedicated teams and our valued clients. We prioritize a company culture that fosters exceptional productivity, ensures customer satisfaction."
+    />
+    <section class="team-intro" aria-labelledby="team-heading">
+      <div>
+        <h2 id="team-heading">Meet Our Great Team</h2>
+        <p>
+          Welcome to our amazing team! We are a group of passionate individuals
+          dedicated to excellence and innovation. Each member brings unique
+          skills and experiences, working together to achieve our goals. Join us
+          as we embark on exciting projects and create lasting impacts.
+        </p>
+      </div>
+      <a class="button" role="button" aria-disabled="true">
+        Join our team
+      </a>
+    </section>
+
+    <section class="team-grid" aria-label="Our employees">
+      {team.map((employee) => {
+        const hasProfile = employee.slug === "sarah-jasmine";
+        const ImageWrapper = hasProfile ? "a" : "div";
+        const NameWrapper = hasProfile ? "a" : "span";
+        const profileUrl = hasProfile ? `/team/${employee.slug}` : undefined;
+        return (
+          <article class="employee">
+            <ImageWrapper
+              class="employee-image"
+              href={profileUrl}
+              aria-label={hasProfile ? `Read about ${employee.name}` : undefined}
+            >
+              <Image
+                src={employee.image.src}
+                width={employee.image.width}
+                height={employee.image.height}
+                alt={employee.name}
+              />
+  
+              <span class="role">{employee.title}</span>
+            </ImageWrapper>
+  
+            <h2>
+              <NameWrapper href={profileUrl}>{employee.name}</NameWrapper>
+            </h2>
+  
+            <p>{employee.description}</p>
+  
+            <div class="social-links">
+              {employee.social_links.map((link) => (
+                <span
+                  role="img"
+                  aria-label={`${employee.name} on ${link.platform}`}
+                >
+                  <DynamicIcon name={link.icon} width={20} height={20} aria-hidden="true" />
+                </span>
+              ))}
+            </div>
+          </article>
+        );
+      })}
+    </section>
+  </main>
+</Layout>
+
+<style>
+  @layer components {
+    .team-intro {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-medium);
+      padding-top: var(--space-section);
+      padding-bottom: var(--space-medium);
+    }
+    .team-intro > div {
+      max-width: 60ch;
+    }
+    .team-intro h2 {
+      font-size: var(--font-size-heading-medium);
+    }
+    .team-intro p {
+      margin-bottom: 0;
+      color: var(--color-text-muted);
+    }
+
+    .team-grid {
+      padding-bottom: var(--space-section);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--space-medium);
+      row-gap: 3rem;
+    }
+
+    .employee {
+      text-align: center;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .employee-image {
+      position: relative;
+      display: block;
+    }
+
+    .employee-image img {
+      width: 100%;
+      aspect-ratio: 732 / 784;
+      object-fit: cover;
+      border-radius: var(--radius-large);
+    }
+
+    .role {
+      position: absolute;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      max-width: calc(100% - 1.5rem);
+      padding: 0.5rem 0.85rem;
+      background: var(--color-neutrals-900);
+      color: white;
+      border-radius: var(--radius-pill);
+      font-size: 0.875rem;
+    }
+
+    h2 {
+      margin-block: var(--space-small) 0.5rem;
+      font-size: var(--font-size-heading-small);
+    }
+
+    h2 a {
+      text-decoration: none;
+    }
+
+    h2 a:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
+    .employee > p {
+      color: var(--color-text-muted);
+      font-size: 0.9375rem;
+    }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .social-links span {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border-radius: 50%;
+    }
+
+    .social-links :global(svg) {
+      display: block;
+    }
+
+    @media (max-width: 850px) {
+      .team-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 550px) {
+      .team-grid {
+        grid-template-columns: 1fr;
+        padding-bottom: var(--space-section);
+      }
+    }
+  }
+</style>

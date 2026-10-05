@@ -1,0 +1,122 @@
+---
+import Phone from "@icons/phone.svg";
+import Clock from "@icons/clock.svg";
+import Pin from "@icons/pin.svg";
+---
+
+<section id="contact" class="contact">
+  <div class="contact-content">
+    <p class="eyebrow">Process</p>
+    <h2>Contact Us. It's Easy.</h2>
+    <p>Leverage agile frameworks to provide a robust synopsis for high level overviews.</p>
+
+    <div class="contact-info">
+      <div class="info-item">
+        <span class="info-icon" aria-hidden="true">
+          <Phone width={24} height={24} />
+        </span>
+        <div>
+          <p>Call Today</p>
+          <strong>+1 800 100 900</strong>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <span class="info-icon" aria-hidden="true">
+          <Clock width={24} height={24} />
+        </span>
+        <div>
+          <p>Monday To Friday</p>
+          <strong>9AM - 5PM</strong>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <span class="info-icon" aria-hidden="true">
+          <Pin width={24} height={24} />
+        </span>
+        <div>
+          <p>USA Office</p>
+          <address>195 Devonshire St Boston, MA</address>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @layer components {
+    .contact {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      padding: var(--space-section) var(--page-gutter);
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .contact-content {
+      max-width: 60ch;
+      min-width: 0;
+    }
+
+    .eyebrow {
+      font-size: var(--font-size-label);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-small);
+    }
+
+    h2 {
+      font-size: var(--font-size-heading-medium);
+      margin-block: 0 var(--space-small);
+    }
+
+    .contact-info {
+      display: grid;
+      gap: 1.5rem;
+      margin-top: var(--space-medium);
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-small);
+    }
+
+    .info-icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      background: var(--color-green-400);
+      border-radius: 50%;
+    }
+
+    .info-icon :global(svg) {
+      display: block;
+    }
+
+    .info-item p {
+      margin-bottom: 0.25rem;
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+    }
+
+    address {
+      font-style: normal;
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 750px) {
+      .contact {
+        grid-template-columns: 1fr;
+        padding-block: 3rem;
+        gap: var(--space-medium);
+      }
+    }
+  }
+</style>

@@ -1,0 +1,200 @@
+---
+import DynamicIcon from "@helpers/DynamicIcon.astro";
+import ArrowLeft from "@icons/arrow-left.svg";
+import ArrowRight from "@icons/arrow--right.svg";
+import { getFinancialProjections } from "@lib/api";
+
+const financialData = await getFinancialProjections();
+---
+
+<section class="financial" aria-labelledby="financial-title">
+  <div class="financial-content">
+    <div class="heading">
+      <div class="heading-text">
+        <p class="label">{financialData.eyebrow}</p>
+
+        <h2 id="financial-title">{financialData.title}</h2>
+
+        <p class="description">{financialData.subtitle}</p>
+      </div>
+
+      <div class="arrows">
+        <button
+          type="button"
+          aria-label="Previous financial tools"
+          disabled
+        >
+          <ArrowLeft width={24} height={21} aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          aria-label="Next financial tools"
+          disabled
+        >
+          <ArrowRight width={24} height={21} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="financial-cards"
+      class="financial-cards"
+      tabindex="0"
+      role="region"
+      aria-label="Financial tools"
+    >
+      {financialData.values.map((tool) => (
+        <article class="financial-card">
+          <div class="icon" aria-hidden="true">
+            <DynamicIcon name={tool.icon} />
+          </div>
+
+          <h3>{tool.title}</h3>
+
+          <p>{tool.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+
+<style>
+  @layer components {
+    .financial {
+      padding-block: var(--space-section);
+      background: var(--color-surface-secondary);
+    }
+
+    .financial-content {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      padding-inline: var(--page-gutter);
+
+      container-type: inline-size;
+    }
+
+    .heading {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .heading-text {
+      max-width: 55ch;
+      min-width: 0;
+    }
+
+    .label {
+      margin-bottom: 0.75rem;
+      font-size: var(--font-size-label);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: var(--font-size-heading-medium);
+    }
+
+    .description {
+      margin: 0;
+      color: var(--color-text-muted);
+    }
+
+    .arrows {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .arrows button {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+
+      background: var(--color-neutrals-900);
+      color: white;
+      font-size: 1.75rem;
+    }
+
+    .arrows button:hover {
+      background: var(--color-neutrals-700);
+    }
+
+    .financial-cards {
+      display: grid;
+      grid-auto-flow: column;
+
+      grid-auto-columns: min(280px, 100%);
+      gap: 1.25rem;
+
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 0.25rem 0.25rem 1rem;
+    }
+
+    .financial-card {
+      scroll-snap-align: start;
+      min-width: 0;
+      padding: 1.5rem;
+      border-radius: var(--radius-large);
+      background: var(--color-surface-tertiary);
+
+      overflow-wrap: anywhere;
+    }
+
+    .icon {
+      margin-bottom: 1rem;
+    }
+
+    .icon :global(svg) {
+      display: block;
+      width: 28px;
+      height: 28px;
+    }
+
+    h3 {
+      margin-bottom: 0.75rem;
+      font-size: var(--font-size-heading-small);
+    }
+
+    .financial-card p {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: 0.9375rem;
+    }
+
+    @container (min-width: 751px) {
+      .financial-cards {
+        grid-auto-columns: calc((100% - 3 * 1.25rem) / 4);
+      }
+    }
+
+    @container (max-width: 750px) {
+      .financial-cards {
+        grid-auto-columns: 44%;
+      }
+    }
+
+    @container (max-width: 450px) {
+      .financial-cards {
+        grid-auto-columns: 88%;
+      }
+    }
+
+    @media (max-width: 750px) {
+      .financial {
+        padding-block: 3rem;
+      }
+    }
+  }
+</style>

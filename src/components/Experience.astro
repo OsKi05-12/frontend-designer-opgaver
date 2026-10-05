@@ -1,0 +1,113 @@
+---
+import { getExperience } from "@lib/api";
+
+const experience = await getExperience();
+---
+
+<section class="experience" aria-labelledby="experience-title">
+  <div class="experience-content">
+    <div class="heading">
+      <p class="label">{experience.eyebrow}</p>
+
+      <h2 id="experience-title">{experience.title}</h2>
+
+      <p class="description">{experience.subtitle}</p>
+    </div>
+
+    <div class="stats">
+      {experience.stats.map((stat) => (
+        <div class="stat">
+          <strong class="stat-value">{stat.value}%</strong>
+          <p>{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  @layer components {
+    .experience {
+      padding-block: var(--space-section);
+      background: var(--color-action);
+      color: var(--color-text);
+    }
+
+    .experience-content {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      padding-inline: var(--page-gutter);
+
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .heading {
+      min-width: 0;
+    }
+
+    .label {
+      margin-bottom: 1rem;
+      font-size: var(--font-size-label);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      max-width: 17ch;
+      margin-bottom: 1rem;
+      font-size: var(--font-size-heading-medium);
+    }
+
+    .description {
+      margin: 0;
+      font-size: 0.9375rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    .stat {
+      min-width: 0;
+    }
+
+    .stat-value {
+      display: block;
+      font-family: var(--font-cabin), Arial, sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .stat p {
+      margin: 1rem 0 0;
+      font-family: var(--font-cabin), Arial, sans-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 800px) {
+      .experience {
+        padding-block: 3rem;
+      }
+
+      .experience-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 450px) {
+      .stats {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+  }
+</style>

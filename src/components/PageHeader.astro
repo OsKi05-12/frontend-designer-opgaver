@@ -1,0 +1,53 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+  lineDirection?: "left" | "right";
+}
+const { eyebrow, title, description, lineDirection = "left" } = Astro.props;
+---
+
+<header class:list={["page-header", "full-width", lineDirection]}>
+  <p class="eyebrow">{eyebrow}</p>
+  <h1>{title}</h1>
+  <p class="intro">{description}</p>
+</header>
+
+<style>
+  @layer components {
+    .page-header {
+      padding: var(--space-section) var(--page-gutter);
+      background: linear-gradient(white, var(--color-surface-secondary));
+      text-align: center;
+      overflow: hidden;
+    }
+    .eyebrow {
+      margin-bottom: var(--space-small);
+    }
+    h1 {
+      position: relative;
+      display: inline-block;
+      margin-bottom: var(--space-medium);
+      font-size: var(--font-size-heading-large);
+    }
+    h1::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: -0.25rem;
+      width: 100vw;
+      height: 3px;
+      background: var(--color-action);
+    }
+    .right h1::after {
+      right: auto;
+      left: 0;
+    }
+    .intro {
+      max-width: 55ch;
+      margin: 0 auto;
+      color: var(--color-text-muted);
+    }
+  }
+</style>

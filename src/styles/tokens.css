@@ -1,0 +1,49 @@
+@layer tokens {
+  :root {
+    --color-yellow-500: #ffcc4a;
+    --color-green-400: #a4eda4;
+    --color-green-600: #4bb84b;
+
+    --color-neutrals-50: #f9fafb;
+    --color-neutrals-200: #eaedf1;
+    --color-neutrals-400: #99a1af;
+    --color-neutrals-700: #5a606f;
+    --color-neutrals-900: #030712;
+
+    --color-action: var(--color-yellow-500);
+    --color-text: var(--color-neutrals-900);
+    --color-text-muted: var(--color-neutrals-700);
+
+    --color-surface-primary: #ffffff;
+    --color-surface-secondary: var(--color-neutrals-50);
+    --color-surface-tertiary: var(--color-neutrals-200);
+
+    --space-small: 1rem;
+    --space-medium: 2rem;
+    --space-large: 4rem;
+    --space-section: clamp(3rem, 7vw, 5rem);
+    --page-gutter: 1.25rem;
+
+    --content-width: 1040px;
+    --text-width: 65ch;
+    --font-size-small: 0.875rem;
+    --color-card-border: #394150;
+    --color-card-top: #101725;
+    --color-card-bottom: #282f3e;
+    --color-action-hover: #f5bf36;
+
+    --font-size-heading-large: clamp(2rem, 4vw, 3rem);
+    --font-size-heading-medium: clamp(1.75rem, 3vw, 2.25rem);
+    --font-size-heading-small: 1.25rem;
+    --font-size-body: 1rem;
+    --font-size-label: 0.75rem;
+
+    --line-height-heading: 1.15;
+    --line-height-body: 1.6;
+
+    --radius-large: 20px;
+    --radius-pill: 999px;
+
+    --shadow-popover: 0 4px 16px rgb(0 0 0 / 0.15);
+  }
+}

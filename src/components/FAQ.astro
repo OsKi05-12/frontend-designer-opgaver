@@ -1,0 +1,129 @@
+---
+import ArrowRight from "@icons/arrow--right.svg";
+import { getFAQ } from "@lib/api";
+
+const questions = await getFAQ();
+---
+
+<section class="faq" aria-labelledby="faq-heading">
+  <p class="eyebrow">FAQ</p>
+  <h2 id="faq-heading">Customer Questions</h2>
+
+  <div class="questions">
+    {questions.map((item) => (
+      <details>
+        <summary>
+          {item.question}
+          <span class="toggle" aria-hidden="true">
+            <ArrowRight width={20} height={18} />
+          </span>
+        </summary>
+
+        <div class="answer">
+          {item.answer.split("\n\n").map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  @layer components {
+    .faq {
+      margin-bottom: 0;
+      padding: clamp(1.5rem, 6vw, 4rem);
+      background: var(--color-surface-secondary);
+      border-radius: var(--radius-large);
+    }
+
+    .eyebrow {
+      font-size: var(--font-size-label);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    h2 {
+      margin-block: 0 var(--space-medium);
+      font-size: var(--font-size-heading-medium);
+      text-align: center;
+    }
+
+    details {
+      border-bottom: 1px solid var(--color-surface-tertiary);
+    }
+
+    summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-small);
+      list-style: none;
+      padding-block: 1.25rem;
+      font-weight: bold;
+      cursor: pointer;
+      overflow-wrap: anywhere;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    .toggle {
+      display: inline-flex;
+      flex-shrink: 0;
+      transform: rotate(90deg);
+    }
+    details[open] .toggle {
+      transform: rotate(-90deg);
+    }
+
+    .answer {
+      padding-bottom: var(--space-small);
+      color: var(--color-text-muted);
+      overflow-wrap: anywhere;
+    }
+
+    .answer p {
+      margin-block: 0 var(--space-small);
+    }
+
+    .answer p:last-child {
+      margin-bottom: 0;
+    }
+
+    @supports (interpolate-size: allow-keywords) and
+      (transition-behavior: allow-discrete) and
+      selector(details::details-content) {
+      details {
+        interpolate-size: allow-keywords;
+      }
+
+      details::details-content {
+        height: 0;
+        overflow: hidden;
+        transition:
+          height 300ms ease,
+          content-visibility 300ms allow-discrete;
+      }
+
+      details[open]::details-content {
+        height: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      details::details-content {
+        transition: none;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .faq {
+        padding: var(--space-small);
+        margin-bottom: 3rem;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,268 @@
+---
+// @ts-nocheck
+
+import Layout from "@layouts/Layout.astro";
+import PageHeader from "@components/PageHeader.astro";
+import { Image } from "astro:assets";
+import { getCaseStudies } from "@lib/api";
+
+export async function getStaticPaths() {
+  const cases = await getCaseStudies();
+  return cases.map((caseStudy) => ({
+    params: { slug: caseStudy.slug },
+    props: { caseStudy },
+  }));
+}
+
+const { caseStudy } = Astro.props;
+const { caseName, category, date, image, buttonLabel } = caseStudy.caseDetails;
+---
+
+<Layout title={caseName}>
+  <main id="main-content" tabindex="-1" class="case-page">
+    <PageHeader
+      eyebrow="Case Studies"
+      title={caseName}
+      description="Our achievements reflect the close collaboration between our expert teams and our esteemed clientele. We cultivate a workplace that champions peak performance and guarantees client satisfaction."
+    />
+
+    <article class="case-article">
+      <header class="case-header">
+        <Image
+          src={image.src}
+          width={image.width}
+          height={image.height}
+          alt={image.alt}
+          class="hero-image"
+        />
+
+        <div class="case-details">
+          <dl>
+            <div>
+              <dt>Case Name</dt>
+              <dd>{caseName}</dd>
+            </div>
+
+            <div>
+              <dt>Category</dt>
+              <dd>{category}</dd>
+            </div>
+
+            <div>
+              <dt>Date</dt>
+              <dd>{date}</dd>
+            </div>
+          </dl>
+
+          <a class="preview-button" role="button" aria-disabled="true">
+            {buttonLabel}
+          </a>
+        </div>
+      </header>
+
+      <div id="project" class="case-content">
+        {caseStudy.sections.map((section) => (
+          <section class="story-section">
+            <div class="story-text flow">
+              <h2>{section.title}</h2>
+
+              {Array.isArray(section.content) ? (
+                section.content.map((paragraph) => <p>{paragraph}</p>)
+              ) : (
+                <p>{section.content}</p>
+              )}
+
+              {section.highlights && (
+                <ul>
+                  {section.highlights.map((highlight) => (
+                    <li>{highlight}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {section.image && (
+              <figure>
+                <Image
+                  src={section.image.src}
+                  width={section.image.width}
+                  height={section.image.height}
+                  alt={section.image.alt}
+                />
+
+                {section.image.caption && (
+                  <figcaption>{section.image.caption}</figcaption>
+                )}
+              </figure>
+            )}
+          </section>
+        ))}
+      </div>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  @layer components {
+    .case-page :global(.page-header) {
+      grid-column: 1 / -1;
+    }
+
+    .case-page {
+      display: grid;
+      grid-template-columns:
+        minmax(var(--page-gutter), 1fr)
+        minmax(0, var(--content-width))
+        minmax(var(--page-gutter), 1fr);
+    }
+
+    .case-article {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns:
+        minmax(var(--page-gutter), 1fr)
+        minmax(0, var(--content-width))
+        minmax(var(--page-gutter), 1fr);
+      padding-block: var(--space-section);
+      min-width: 0;
+    }
+
+    @supports (grid-template-columns: subgrid) {
+      .case-article {
+        grid-template-columns: subgrid;
+      }
+    }
+
+    .case-header,
+    .case-content {
+      grid-column: 2;
+      min-width: 0;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-large);
+    }
+
+    .case-details {
+      position: relative;
+      width: 90%;
+      margin: -3rem auto 0;
+      padding: var(--space-medium);
+      background: var(--color-text);
+      color: white;
+      border-radius: var(--radius-large);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-medium);
+    }
+
+    .case-details dl {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-medium);
+      margin: 0;
+    }
+
+    dt {
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    dd {
+      margin: 0;
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    .preview-button {
+      display: inline-block;
+      padding: 0.85rem 1.5rem;
+      background: var(--color-action);
+      color: var(--color-text);
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .case-content {
+      padding-top: var(--space-section);
+    }
+
+    .story-section + .story-section {
+      margin-top: var(--space-large);
+    }
+
+    .story-text {
+      max-width: var(--text-width);
+      margin-inline: auto;
+      overflow-wrap: anywhere;
+    }
+
+    .flow {
+      --flow-space: var(--space-small);
+    }
+
+    .flow > ul {
+      --flow-space: 1.75rem;
+      padding-left: 1.5rem;
+    }
+
+    li + li {
+      margin-top: 0.75rem;
+    }
+
+    h2 {
+      font-size: var(--font-size-heading-small);
+    }
+
+    .story-text p,
+    .story-text li {
+      color: var(--color-text-muted);
+    }
+
+    figure {
+      position: relative;
+      margin: var(--space-medium) 0 0;
+    }
+
+    figure img {
+      width: 100%;
+      height: auto;
+    }
+
+    figcaption {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 2.5rem 1rem 1rem;
+      background: linear-gradient(transparent, rgb(0 0 0 / 0.85));
+      color: white;
+      font-size: var(--font-size-small);
+      text-align: center;
+    }
+
+    @media (max-width: 650px) {
+      .case-article {
+        padding-block: 3rem;
+      }
+
+      .case-details {
+        width: 100%;
+        margin-top: var(--space-small);
+        padding: var(--space-small);
+      }
+
+      .case-details dl {
+        grid-template-columns: 1fr;
+        gap: var(--space-small);
+      }
+
+      .case-content {
+        padding-top: 3rem;
+      }
+    }
+  }
+</style>

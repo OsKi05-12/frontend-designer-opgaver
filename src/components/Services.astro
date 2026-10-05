@@ -1,0 +1,39 @@
+---
+// @ts-nocheck
+
+import ServiceCard from "@components/ServiceCard.astro";
+
+import { getServices } from "@lib/api";
+
+const services = await getServices();
+---
+
+<section class="services" aria-label="Our services">
+  {services.map((service) => (
+    <ServiceCard service={service} />
+  ))}
+</section>
+
+<style>
+  @layer components {
+    .services {
+      max-width: var(--content-width);
+      margin: -5rem auto 0;
+      padding-inline: var(--page-gutter);
+
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-small);
+
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 750px) {
+      .services {
+        grid-template-columns: 1fr;
+        margin-top: var(--space-medium);
+      }
+    }
+  }
+</style>

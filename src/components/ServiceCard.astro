@@ -1,0 +1,78 @@
+---
+// @ts-nocheck
+import ArrowRight from "@icons/arrow--right.svg";
+
+const { service } = Astro.props;
+---
+
+<article class="service-card">
+  <h2>{service.title}</h2>
+
+  <p>{service.description}</p>
+
+  <a role="button" aria-disabled="true">
+    {service.buttonText}
+    <ArrowRight width={20} height={18} aria-hidden="true" />
+  </a>
+</article>
+
+<style>
+  @layer components {
+    .service-card {
+      min-width: 0;
+      padding: 1.75rem;
+
+      border: 1px solid var(--color-card-border);
+      border-radius: var(--radius-large);
+
+      background: linear-gradient(
+        var(--color-card-top),
+        var(--color-card-bottom)
+      );
+      color: white;
+
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      overflow-wrap: anywhere;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: var(--font-size-heading-small);
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    a {
+      margin-top: auto;
+      padding-top: 1.5rem;
+
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      color: var(--color-action);
+      font-size: 0.875rem;
+      font-weight: 700;
+
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
+    a:hover {
+      color: white;
+    }
+
+    @media (max-width: 750px) {
+      .service-card {
+        padding: 1.5rem;
+      }
+    }
+  }
+</style>

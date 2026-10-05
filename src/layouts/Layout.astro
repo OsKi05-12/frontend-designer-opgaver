@@ -1,0 +1,303 @@
+---
+import "@styles/main.css";
+import { Font } from "astro:assets";
+
+interface Props {
+  title?: string;
+}
+const { title = "Business Consulting" } = Astro.props;
+
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title} | AskExperts</title>
+
+    <Font cssVariable="--font-cabin" preload />
+    <Font cssVariable="--font-lato" preload />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content">
+      Skip to content
+    </a>
+    <header class="site-header">
+      <div class="header-content">
+        <a class="logo" href="/">
+          Ask<span>Experts</span>
+        </a>
+
+        <nav aria-label="Main navigation">
+          <a href="/" aria-current={path === "/" ? "page" : undefined}>
+            Home
+          </a>
+
+          <a
+            href="/case-studies/taxes-and-efficiency"
+            aria-current={path.startsWith("/case-studies") ? "page" : undefined}
+          >
+            Case Studies
+          </a>
+
+          <a
+            href="/team"
+            aria-current={path.startsWith("/team") ? "page" : undefined}
+          >
+            Team
+          </a>
+
+          <a
+            href="/about"
+            aria-current={path === "/about" ? "page" : undefined}
+          >
+            About
+          </a>
+        </nav>
+
+        <button class="login-button" type="button" disabled>
+          Login
+        </button>
+      </div>
+    </header>
+
+    <slot />
+
+    <section class="newsletter" aria-labelledby="newsletter-title">
+      <p class="label">STAY UPDATED</p>
+
+      <h2 id="newsletter-title">Subscribe Our Newsletter</h2>
+
+      <p class="newsletter-description">
+        Build stronger Customer Relationships with
+        <strong>Consultalk</strong>
+      </p>
+
+      <div id="newsletter-form">
+        <label class="hidden-label" for="newsletter-email">
+          Email address
+        </label>
+
+        <input
+          id="newsletter-email"
+          type="email"
+          autocomplete="email"
+          placeholder="your mail address"
+          disabled
+        />
+
+        <button class="yellow-button" type="button" disabled>
+          Subscribe
+        </button>
+      </div>
+
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <a class="logo" href="/">
+          Ask<span>Experts</span>
+        </a>
+
+        <p>©2026 Consultalk. All rights reserved</p>
+        <p>Terms of Service | Privacy Policy</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  @layer components {
+    .site-header,
+    .newsletter,
+    .site-footer {
+      background: var(--color-neutrals-900);
+      color: white;
+    }
+
+    .header-content,
+    .footer-content {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      padding: 1.5rem var(--page-gutter);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .logo {
+      font-family: var(--font-cabin), Arial, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--color-action);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      padding-bottom: 0.25rem;
+      border-bottom: 3px solid transparent;
+      font-size: 0.875rem;
+      text-decoration: none;
+    }
+
+    nav a[aria-current="page"] {
+      border-bottom-color: var(--color-action);
+    }
+
+    nav a:hover {
+      color: var(--color-action);
+    }
+
+    .login-button {
+      padding: 0.35rem 1.5rem;
+      border: 0;
+      border-radius: var(--radius-pill);
+      background: var(--color-surface-secondary);
+      color: var(--color-text);
+    }
+
+    .skip-link {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      z-index: 10;
+      padding: 0.75rem;
+      background: white;
+      color: var(--color-text);
+      transform: translateY(-200%);
+    }
+    .skip-link:focus {
+      transform: none;
+    }
+
+    .yellow-button {
+      padding: 0.75rem 1.5rem;
+      border: 0;
+      border-radius: var(--radius-pill);
+      background: var(--color-action);
+      color: var(--color-text);
+    }
+
+    .yellow-button:hover {
+      background: var(--color-action-hover);
+    }
+
+    @supports (background: hsl(from #ffcc4a h s calc(l - 8))) {
+      .yellow-button:hover {
+        background: hsl(from var(--color-action) h s calc(l - 8));
+      }
+    }
+
+    .newsletter {
+      padding: 3.5rem var(--page-gutter);
+      text-align: center;
+    }
+
+    .label {
+      margin-bottom: 0.75rem;
+      color: var(--color-action);
+      font-size: var(--font-size-label);
+      letter-spacing: 0.15em;
+    }
+
+    .newsletter h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.75rem;
+    }
+
+    .newsletter-description {
+      color: var(--color-neutrals-400);
+      font-size: 0.875rem;
+    }
+
+    .newsletter strong {
+      color: var(--color-action);
+    }
+
+    .newsletter #newsletter-form {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .newsletter input {
+      width: 280px;
+      min-width: 0;
+      padding: 0.75rem 1.25rem;
+
+      border: 1px solid var(--color-neutrals-400);
+      border-radius: var(--radius-pill);
+      background: transparent;
+      color: white;
+    }
+
+    .newsletter input::placeholder {
+      color: var(--color-neutrals-400);
+      opacity: 1;
+    }
+
+    .site-footer {
+      border-top: 1px solid rgb(255 255 255 / 0.15);
+    }
+
+    .footer-content p {
+      margin: 0;
+      color: var(--color-neutrals-400);
+      font-size: 0.75rem;
+    }
+
+    .hidden-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 700px) {
+      .header-content {
+        flex-wrap: wrap;
+      }
+
+      nav {
+        order: 3;
+        width: 100%;
+        gap: 1rem;
+      }
+
+      .newsletter #newsletter-form {
+        flex-direction: column;
+        max-width: 350px;
+        margin-inline: auto;
+      }
+
+      .newsletter input {
+        width: 100%;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+    }
+  }
+</style>

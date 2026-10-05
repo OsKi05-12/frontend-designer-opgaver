@@ -1,0 +1,19 @@
+{
+  "title": "Empowering Your Business Growth",
+  "subtitle": "Discover tailored strategies and expert insights to take your business to the next level. Let us help you navigate challenges and achieve sustainable success.",
+  "imageAlt": "Sarah Jasmine, business consultant",
+  "buttons": [
+    {
+      "text": "Book a Meeting",
+      "href": "#contact",
+      "className": "primary-button",
+      "icon": null
+    },
+    {
+      "text": "Learn More",
+      "href": "/about",
+      "className": "secondary-button",
+      "icon": "arrow--right"
+    }
+  ]
+}

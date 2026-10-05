@@ -1,0 +1,105 @@
+---
+import Checkmark from "@icons/checkmark.svg";
+---
+
+<section class="expect" aria-labelledby="expect-title">
+  <div class="content">
+    <p class="label">WE'LL WORK WITH YOU</p>
+    <h2 id="expect-title">What To Expect</h2>
+    <p class="description">
+      Our collaboration is built on transparency, efficiency, and measurable
+      results. Together, we create strategies tailored to your unique needs and goals.
+    </p>
+
+    <ul>
+      <li>
+        <span class="checkmark" aria-hidden="true">
+          <Checkmark width={20} height={20} />
+        </span>
+        <span>
+          Collaborate to build actionable strategies that drive sustainable growth
+          and deliver tangible outcomes.
+        </span>
+      </li>
+      <li>
+        <span class="checkmark" aria-hidden="true">
+          <Checkmark width={20} height={20} />
+        </span>
+        <span>
+          Identify opportunities to optimize processes and implement impactful
+          solutions with measurable results.
+        </span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  @layer components {
+    .expect {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      padding: var(--space-section) var(--page-gutter);
+
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .content {
+      max-width: 60ch;
+      min-width: 0;
+    }
+
+    .label {
+      margin-bottom: 0.75rem;
+      font-size: var(--font-size-label);
+      letter-spacing: 0.15em;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: var(--font-size-heading-medium);
+    }
+
+    .description {
+      margin-bottom: 1.25rem;
+      color: var(--color-text-muted);
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+
+      color: var(--color-text-muted);
+      font-size: 0.9375rem;
+    }
+
+    li + li {
+      margin-top: 1rem;
+    }
+
+    .checkmark {
+      display: inline-flex;
+      flex-shrink: 0;
+      color: var(--color-green-600);
+      font-weight: 700;
+    }
+
+    @media (max-width: 750px) {
+      .expect {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding-block: 3rem;
+      }
+    }
+  }
+</style>

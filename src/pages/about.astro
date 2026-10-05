@@ -1,0 +1,263 @@
+---
+import DynamicIcon from "@helpers/DynamicIcon.astro";
+import Layout from "@layouts/Layout.astro";
+import CoreValues from "@components/CoreValues.astro";
+import FAQ from "@components/FAQ.astro";
+import PageHeader from "@components/PageHeader.astro";
+
+import { Image } from "astro:assets";
+import { getTeamMembers } from "@lib/api";
+
+const team = await getTeamMembers();
+const previewTeam = team.slice(0, 2);
+---
+
+<Layout title="About">
+  <main id="main-content" tabindex="-1" class="about-page page-grid">
+    <PageHeader
+      eyebrow="About"
+      title="Igniting Innovation"
+      description="Our strength lies in the collaboration between our talented teams and esteemed clients. We cultivate a workplace that champions innovation, promotes peak performance, and guarantees client satisfaction."
+      lineDirection="right"
+    />
+
+    <section class="vision">
+      <div class="vision-content">
+        <p class="eyebrow">Our vision</p>
+        <h2>Turn your ideas into reality.</h2>
+        <p>
+          Capitalize on low hanging fruit to identify a ballpark value added
+          activity to beta test. Override the digital divide with additional
+          from DevOps.
+        </p>
+
+        <ul>
+          <li>
+            <DynamicIcon name="checkmark" width={20} height={20} aria-hidden="true" />
+            <span>Bring to the table win-win survival strategies to ensure proactive
+            domination. At the end of the day.</span>
+          </li>
+          <li>
+            <DynamicIcon name="checkmark" width={20} height={20} aria-hidden="true" />
+            <span>Capitalize on low hanging fruit to identify a ballpark value added
+            activity to beta test. Override the digital divide.</span>
+          </li>
+        </ul>
+      </div>
+
+    </section>
+
+    <section class="stats" aria-label="Company statistics">
+      <div>
+        <strong>1128+</strong>
+        <p>Successful Work</p>
+      </div>
+
+      <div>
+        <strong>908+</strong>
+        <p>Team member</p>
+      </div>
+
+      <div>
+        <strong>258+</strong>
+        <p>Happy Customers</p>
+      </div>
+
+      <div>
+        <strong>564+</strong>
+        <p>Creative Idea</p>
+      </div>
+    </section>
+
+    <div class="values-section full-width">
+      <CoreValues />
+    </div>
+
+    <section class="team-preview shared-columns">
+      <div class="team-heading">
+        <p class="eyebrow">Our team</p>
+        <h2>We champion the bold</h2>
+        <p>
+          Our success stems from the synergy between dedicated teams and our
+          valued clients. We prioritize a company culture that fosters
+          exceptional productivity, ensures customer satisfaction.
+        </p>
+
+        <a class="team-button" role="button" aria-disabled="true">
+          Meet the Team
+        </a>
+      </div>
+
+      <div class="people">
+        {previewTeam.map((employee) => {
+          const hasProfile = employee.slug === "sarah-jasmine";
+          const ImageWrapper = hasProfile ? "a" : "div";
+          const NameWrapper = hasProfile ? "a" : "span";
+          const profileUrl = hasProfile ? `/team/${employee.slug}` : undefined;
+          return (
+            <article class="person">
+              <ImageWrapper href={profileUrl}>
+                <Image
+                  {...employee.image}
+                  alt={employee.name}
+                />
+              </ImageWrapper>
+  
+              <div>
+                <h3>
+                  <NameWrapper href={profileUrl}>{employee.name}</NameWrapper>
+                </h3>
+  
+                <strong>{employee.title}</strong>
+                <p>{employee.description}</p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <div class="faq-section">
+      <FAQ />
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @layer components {
+    h2 {
+      font-size: var(--font-size-heading-medium);
+      margin-block: 0 var(--space-small);
+    }
+
+    .vision,
+    .team-preview {
+      display: grid;
+      align-items: center;
+      column-gap: var(--space-medium);
+      row-gap: var(--space-medium);
+      padding-block: var(--space-section);
+    }
+
+    .vision-content,
+    .team-heading,
+    .people {
+      min-width: 0;
+    }
+
+    .vision ul {
+      list-style: none;
+      padding: 0;
+      margin-block: var(--space-medium) 0;
+    }
+
+    .vision-content {
+      max-width: 60ch;
+    }
+
+    .vision li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .vision li :global(svg) {
+      flex-shrink: 0;
+      color: var(--color-green-600);
+    }
+
+    .vision li + li {
+      margin-top: var(--space-small);
+    }
+
+    .faq-section {
+      padding-block: var(--space-section);
+      max-width: 850px;
+      width: 100%;
+      margin-inline: auto;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-medium);
+      padding-bottom: var(--space-section);
+      text-align: center;
+    }
+
+    .stats strong {
+      font-size: 2.5rem;
+      font-family: var(--font-cabin);
+    }
+
+    .stats p {
+      margin-bottom: 0;
+    }
+
+    .team-button {
+      display: inline-block;
+      margin-top: var(--space-small);
+      padding: 0.85rem 1.5rem;
+      background: var(--color-text);
+      color: white;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+    }
+
+    .people {
+      display: grid;
+      gap: var(--space-medium);
+    }
+
+    .person {
+      display: grid;
+      grid-template-columns: 130px minmax(0, 1fr);
+      align-items: center;
+      gap: var(--space-small);
+    }
+
+    .person img {
+      width: 130px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: var(--radius-large);
+    }
+
+    .person h3 {
+      margin-block: 0 0.5rem;
+      font-size: var(--font-size-heading-small);
+    }
+
+    .person h3 a {
+      text-decoration: none;
+    }
+
+    .person h3 a:hover {
+      text-decoration: underline;
+    }
+
+    .person p {
+      margin-block: 0.5rem 0;
+      color: var(--color-text-muted);
+      font-size: 0.9375rem;
+    }
+
+    @media (max-width: 750px) {
+      .vision,
+      .team-preview {
+        grid-template-columns: 1fr;
+        padding-block: var(--space-section);
+      }
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding-bottom: var(--space-section);
+      }
+    }
+
+    @media (max-width: 400px) {
+      .person {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+</style>
